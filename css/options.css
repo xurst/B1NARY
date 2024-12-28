@@ -1,0 +1,154 @@
+.button-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 275px;
+    height: 37px;
+    background-color: #191919;
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    border: 2px solid #3c3c3c;
+    position: relative;
+    transition: width 0.3s ease;
+}
+
+.button {
+    flex: 1;
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-family: "IBM Plex Mono", monospace;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.3s, opacity 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button:first-child {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.button:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.button:hover {
+    background-color: #4c4c4c;
+}
+
+.copy-button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid #3c3c3c;
+    border-radius: 12px;
+    padding: 0 15px;
+    font-size: 16px;
+    font-family: "IBM Plex Mono", monospace;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.3s, opacity 0.3s;
+    height: 37px;
+}
+
+.copy-button:hover {
+    background-color: #4c4c4c;
+}
+
+.divider {
+    width: 2px;
+    height: 100%;
+    background-color: #4c4c4c;
+    transition: opacity 0.3s ease-out;
+}
+
+.mode-option {
+    background: none;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 14px;
+    width: 100%;
+    text-align: left;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    margin: 2px 0;
+}
+
+.mode-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+}
+
+.mode-option.active {
+    background: rgba(79, 70, 229, 0.2);
+    color: #4F46E5;
+}
+
+.mode-option::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.mode-option:hover::before {
+    opacity: 1;
+}
+
+.mode-option .description {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-left: auto;
+    transition: color 0.2s;
+}
+
+.mode-option:hover .description {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.dropdown-separator {
+    height: 1px;
+    background: linear-gradient(to right,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0)
+    );
+    margin: 8px 4px;
+}
+
+@keyframes optionPulse {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+.mode-option:hover {
+    background: linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.1),
+            rgba(255, 255, 255, 0.05)
+    );
+    background-size: 200% 200%;
+    animation: optionPulse 0.5s ease-in-out forwards;
+}
+
+.scale-up {
+    animation: scaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}

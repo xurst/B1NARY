@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Page</title>
+  <link rel="stylesheet" href="../css/transitions.css">
+  <link rel="stylesheet" href="../css/debug.css">
+</head>
+<body>
+<h1>Debug Page</h1>
+
+<button id="back-button">Go Back</button>
+
+<div class="debug-section">
+  <h2>Mode Selection Debug</h2>
+  <button id="test-mode-binary">Test Binary Mode</button>
+  <button id="test-mode-hex">Test Hexadecimal Mode</button>
+  <button id="test-mode-morse">Test Morse Mode</button>
+  <p id="mode-status">Current Mode: <span id="current-mode">binary</span></p>
+</div>
+
+<div class="debug-section">
+  <h2>Conversion Functionality Debug</h2>
+  <input type="text" id="test-input" placeholder="Enter test input" />
+  <button id="test-convert">Test Convert</button>
+  <p>Converted Output: <span id="conversion-output"></span></p>
+</div>
+
+<div class="debug-section">
+  <h2>Clipboard Copy Debug</h2>
+  <button id="test-copy">Test Copy</button>
+  <p>Copy Status: <span id="copy-status"></span></p>
+</div>
+
+<div class="debug-section">
+  <h2>Notification System Debug</h2>
+  <button id="test-notification-info">Test Info Notification</button>
+  <button id="test-notification-warning">Test Warning Notification</button>
+  <button id="test-notification-success">Test Success Notification</button>
+  <button id="test-notification-error">Test Error Notification</button>
+</div>
+
+<div class="debug-section">
+  <h2>Reset</h2>
+  <button id="reset-button">Reset All</button>
+</div>
+
+<script src="../src/js/services/debug.js"></script>
+<script src="../src/js/main.js"></script>
+<script src="../src/js/components/notificationSystem.js"></script>
+<script src="../src/js/utils/modes.js"></script>
+<script src="../src/js/utils/settings.js"></script>
+<script src="../src/js/utils/transitions.js"></script>
+</body>
+</html>
