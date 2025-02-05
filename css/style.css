@@ -86,7 +86,6 @@ body {
     margin-top: 0; /* Remove extra top margin since we are centering the title only */
 }
 
-/* Optional: Add subtle animation for title entrance */
 .title {
     animation: fadeIn 1s ease-in-out forwards;
 }
