@@ -8,6 +8,8 @@ const convertButton = document.querySelector('.convert-button');
 const resetButton = document.querySelector('.reset-button');
 const copyButton = document.querySelector('.copy-button');
 
+import { showNotification } from "./components/notificationSystem.js";
+
 let currentMode = 'binary';
 modeButton.textContent = currentMode;
 

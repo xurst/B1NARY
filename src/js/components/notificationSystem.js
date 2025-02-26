@@ -1,151 +1,157 @@
+// notificationSystem.js
+
+// Class
 class NotificationManager {
     constructor() {
-        this.notifications = [];
-        this.notificationCount = 0;
+      this.stack = document.getElementById("notifications-stack");
+      if (!this.stack) {
+        this.stack = document.createElement("div");
+        this.stack.id = "notifications-stack";
+        this.stack.className = "notification-stack";
+        document.body.appendChild(this.stack);
+      }
     }
-
-    createNotificationElement(type = 'default') {
-        const notification = document.createElement('div');
-        notification.className = 'notification-container hidden';
-
-        const indicator = this.createTypeIndicator(type);
-        const message = document.createElement('p');
-        message.className = 'notification-message';
-
-        const progressBar = document.createElement('div');
-        progressBar.className = 'notification-progress-bar';
-
-        const closeBtn = document.createElement('button');
-        closeBtn.className = 'close-notification';
-        closeBtn.innerHTML = '<i class="fas fa-times"></i>';
-
-        notification.appendChild(indicator);
-        notification.appendChild(message);
-        notification.appendChild(progressBar);
-        notification.appendChild(closeBtn);
-
-        document.body.appendChild(notification);
-
-        return notification;
+  
+    createNotificationElement(type = "default", message) {
+      const notification = document.createElement("div");
+      notification.className = `notification-container notification-${type}`;
+  
+      let extraErrorHtml = "";
+      if (type === "error") {
+        extraErrorHtml = `
+            <div style="cursor:pointer; color:#F44336; margin-top:4px; font-size:12px;">
+              (click me to copy error message)
+            </div>
+          `;
+      }
+  
+      const icons = {
+        success: '<i class="fa-solid fa-check-circle"></i>',
+        error: '<i class="fa-solid fa-times-circle"></i>',
+        warning: '<i class="fa-solid fa-exclamation-triangle"></i>',
+        info: '<i class="fa-solid fa-info-circle"></i>',
+        default: '<i class="fa-solid fa-bell"></i>',
+      };
+  
+      notification.innerHTML = `
+            <div class="notification-type-indicator">
+              ${icons[type] || icons["default"]}
+            </div>
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <p class="notification-message">${message}</p>
+              ${extraErrorHtml}
+            </div>
+            <button class="close-notification">
+              <i class="fa-solid fa-times"></i>
+            </button>
+            <div class="notification-progress-bar"></div>
+          `;
+  
+      return notification;
     }
-
-    calculatePosition(index) {
-        const spacing = 10;
-        const notificationHeight = 60;
-        const bottomOffset = 30;
-        return bottomOffset + (notificationHeight + spacing) * index;
-    }
-
-    createTypeIndicator(type) {
-        const indicator = document.createElement('div');
-        indicator.className = 'notification-type-indicator';
-
-        let icon = '●';
-        switch(type) {
-            case 'success': icon = '✓'; break;
-            case 'error': icon = '!'; break;
-            case 'warning': icon = '⚠'; break;
-            case 'info': icon = 'i'; break;
-        }
-
-        indicator.textContent = icon;
-        return indicator;
-    }
-
-    showNotification(message, type = 'default', duration = 6000, errorCallback = null) {
-        try {
-            const notificationId = ++this.notificationCount;
-            const notificationElement = this.createNotificationElement(type);
-
-            const messageElement = notificationElement.querySelector('.notification-message');
-            const progressBar = notificationElement.querySelector('.notification-progress-bar');
-            const closeBtn = notificationElement.querySelector('.close-notification');
-
-            const notificationTypes = {
-                success: 'notification-success',
-                error: 'notification-error',
-                warning: 'notification-warning',
-                default: 'notification-default',
-                info: 'notification-info'
-            };
-
-            if (type in notificationTypes) {
-                notificationElement.classList.add(notificationTypes[type]);
-            }
-
-            progressBar.style.width = '0%';
-
-            messageElement.textContent = message;
-
-            this.notifications.push({
-                id: notificationId,
-                element: notificationElement
-            });
-
-            this.updateNotificationPositions();
-
-            requestAnimationFrame(() => {
-                notificationElement.classList.remove("hidden");
-                requestAnimationFrame(() => {
-                    notificationElement.classList.add("show-notification");
-                    requestAnimationFrame(() => {
-                        progressBar.style.transition = `width ${duration}ms linear`;
-                        progressBar.style.width = '100%';
-                    });
-                });
-            });
-
-            const hideNotification = () => {
-                progressBar.style.transition = 'none';
-                progressBar.style.width = '0%';
-                notificationElement.classList.remove("show-notification");
-                notificationElement.classList.add("hide-notification");
-
-                this.notifications = this.notifications.filter(n => n.id !== notificationId);
-
-                this.updateNotificationPositions();
-
-                setTimeout(() => {
-                    notificationElement.remove();
-                }, 800);
-            };
-
-            const timeout = setTimeout(() => {
-                hideNotification();
-            }, duration);
-
-            closeBtn.addEventListener('click', () => {
-                clearTimeout(timeout);
-                hideNotification();
-            });
-        } catch (err) {
-            if (typeof errorCallback === 'function') {
-                errorCallback(err);
-            } else {
-                console.error("An error occurred in showNotification:", err);
-            }
-        }
-    }
-
-    updateNotificationPositions() {
-        this.notifications.forEach((notification, index ) => {
-            const bottomPosition = this.calculatePosition(index);
-            notification.element.style.bottom = `${bottomPosition}px`;
+  
+    showNotification(
+      message,
+      type = "default",
+      duration = 3000,
+      errorCallback = null
+    ) {
+      try {
+        const notificationElement = this.createNotificationElement(type, message);
+        // Append new notification to the stack
+        this.stack.insertBefore(notificationElement, this.stack.firstChild);
+  
+        // Trigger popup animation
+        requestAnimationFrame(() => {
+          notificationElement.classList.add("show-notification");
         });
+  
+        const progressBar = notificationElement.querySelector(".notification-progress-bar");
+  
+        // Function to remove notification with exit animation
+        const removeNotification = () => {
+          notificationElement.classList.remove("show-notification");
+          setTimeout(() => {
+            if (notificationElement.parentNode) {
+              notificationElement.parentNode.removeChild(notificationElement);
+            }
+          }, 300);
+        };
+  
+        // Animate progress bar and remove notification after transition ends
+        if (progressBar) {
+          requestAnimationFrame(() => {
+            progressBar.style.transition = `width ${duration}ms linear`;
+            progressBar.style.width = "100%";
+            progressBar.addEventListener(
+              "transitionend",
+              function (e) {
+                if (e.propertyName === "width") {
+                  removeNotification();
+                }
+              },
+              { once: true }
+            );
+          });
+        } else {
+          setTimeout(removeNotification, duration);
+        }
+  
+        // Close button click handler
+        const closeBtn = notificationElement.querySelector(".close-notification");
+        closeBtn.addEventListener("click", removeNotification);
+  
+        // Error-specific behavior: copy error message on click
+        if (type === "error") {
+          const copyError = notificationElement.querySelector(
+            'div[style*="cursor:pointer"]'
+          );
+          if (copyError) {
+            copyError.addEventListener("click", (event) => {
+              navigator.clipboard
+                .writeText(message)
+                .then(() =>
+                  this.showNotification("error message copied!", "success", 3000)
+                )
+                .catch(() =>
+                  this.showNotification(
+                    "failed to copy error message.",
+                    "error",
+                    3000
+                  )
+                );
+              event.stopPropagation();
+            });
+          }
+        }
+      } catch (err) {
+        if (typeof errorCallback === "function") {
+          errorCallback(err);
+        } else {
+          console.error("An error occurred in showNotification:", err);
+        }
+      }
     }
-}
-
-// Create an instance of NotificationManager
-const notificationManager = new NotificationManager();
-
-function showNotification(message, type = 'default', duration = 6000, errorCallback = null) {
+  }
+  
+  const notificationManager = new NotificationManager();
+  
+  function showNotification(
+    message,
+    type = "default",
+    duration = 3000,
+    errorCallback = null
+  ) {
     notificationManager.showNotification(message, type, duration, errorCallback);
-}
-
-// Example
-showNotification(
-    "page reload!",
-    "info",
-    2000,
-    (err) => console.error("could not copy text: ", err)
-);
+  }
+  
+  // Page reload notification
+  document.addEventListener("DOMContentLoaded", () => {
+    showNotification("page reload!", "info", 1000);
+  });
+  
+  export { showNotification, NotificationManager };
+  
+  window.showNotification = showNotification;
+  window.NotificationManager = NotificationManager;
+  

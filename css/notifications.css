@@ -1,32 +1,49 @@
-.notification-container {
+/* notifications.css */
+
+/* Container that holds multiple notifications in a stack */
+.notification-stack {
     position: fixed;
     right: 24px;
     bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+    z-index: 9999;
+}
+
+/* Individual notification element */
+.notification-container {
+    position: relative;
     background: #000000;
     color: #f5f5f7;
     padding: 14px 40px 14px 20px;
     border-radius: 12px;
-    width: 300px;
-    min-height: 48px;
+    width: 310px;
+    min-height: 70px;
     font-family: "IBM Plex Mono", monospace;
     font-size: 14px;
     font-weight: 500;
     opacity: 0;
     display: flex;
     align-items: center;
-    transform: translateY(100px);
+    transform: translateY(20px);
     transition:
-            transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-            opacity 0.3s ease,
-            background-color 0.2s ease;
-    z-index: 9999;
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        opacity 0.3s ease,
+        background-color 0.2s ease;
     box-shadow:
-            0 4px 12px rgba(0, 0, 0, 0.15),
-            0 8px 24px rgba(0, 0, 0, 0.1);
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+}
+
+.show-notification {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .notification-message {
@@ -37,20 +54,7 @@
     flex-grow: 1;
 }
 
-.notification-progress-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    width: 0%;
-    background: linear-gradient(
-            90deg,
-            rgba(245, 245, 247, 0.7) 0%,
-            rgba(245, 245, 247, 0.9) 100%
-    );
-    transition: width linear;
-}
-
+/* Close button */
 .close-notification {
     position: absolute;
     right: 8px;
@@ -67,22 +71,12 @@
     align-items: center;
     justify-content: center;
 }
-
 .close-notification:hover {
     opacity: 1;
     transform: translateY(-50%) scale(1.1);
 }
 
-.show-notification {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.hide-notification {
-    transform: translateY(100px);
-    opacity: 0;
-}
-
+/* Icon or type indicator */
 .notification-type-indicator {
     margin-right: 12px;
     font-size: 16px;
@@ -122,11 +116,17 @@
     color: #2196F3;
 }
 
-@keyframes progress {
-    from {
-        background-position: 100% 0;
-    }
-    to {
-        background-position: 0 0;
-    }
+/* Progress bar styles */
+.notification-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(
+        90deg,
+        rgba(245, 245, 247, 0.7) 0%,
+        rgba(245, 245, 247, 0.9) 100%
+    );
+    transition: width linear;
 }
