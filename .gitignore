@@ -1,7 +1,0 @@
-cat > .gitignore << EOL
-node_modules/
-.env
-.DS_Store
-*.log
-.idea/
-EOL

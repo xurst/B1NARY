@@ -1,4 +1,4 @@
-B1NARY is a old half finished project of mine. its a converter with no ads or popups so yeah thats cool. i dont do read mes please bare with me..
+A easy to use and good looking binary/hex translator and converter.
 
 https://xurst.github.io/B1NARY/
 
